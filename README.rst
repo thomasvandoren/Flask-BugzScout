@@ -1,6 +1,6 @@
 Flask-BugzScout
 ===============
-BugzScout extension for Flask.
+`BugzScout <https://pypi.python.org/pypi/bugzscout>`_ extension for Flask.
 
 .. image:: https://travis-ci.org/thomasvandoren/Flask-BugzScout.png?branch=master
     :target: https://travis-ci.org/thomasvandoren/Flask-BugzScout
