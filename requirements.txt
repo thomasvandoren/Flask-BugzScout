@@ -1,0 +1,10 @@
+bugzscout
+Flask
+
+# Test dependencies.
+mock
+nose
+nosexcover
+pep8
+pyflakes
+tox
