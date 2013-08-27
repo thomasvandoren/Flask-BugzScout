@@ -17,7 +17,8 @@ setup(
     license         ='BSD',
     packages        =find_packages(exclude=('test',)),
     install_requires=[
-        'requests',
+        'bugzscout',
+        'Flask',
         ],
     classifiers     =[
         'Development Status :: 3 - Alpha',
