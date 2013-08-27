@@ -22,7 +22,7 @@ setup(
     url                 ='https://github.com/thomasvandoren/Flask-BugzScout',
     keywords            =['BugzScout', 'Flask', 'FogBugz'],
     license             ='BSD',
-    packages            =find_packages(exclude=('test',))
+    packages            =find_packages(exclude=('test',)),
     zip_safe            =False,
     include_package_data=True,
     platforms           ='any',
