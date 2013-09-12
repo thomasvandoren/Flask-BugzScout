@@ -2,9 +2,8 @@ bugzscout
 Flask
 
 # Test dependencies.
+flake8
 mock
 nose
 nosexcover
-pep8
-pyflakes
 tox
