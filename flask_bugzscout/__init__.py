@@ -44,7 +44,7 @@ class BugzScout(object):
         app.config.setdefault('BUGZSCOUT_PROJECT', None)
         app.config.setdefault('BUGZSCOUT_AREA', None)
 
-        app.config.setdefault('BUGZSCOUT_HTTP_CODES', set(xrange(400, 418)))
+        app.config.setdefault('BUGZSCOUT_HTTP_CODES', set(range(400, 418)))
 
         self.url = app.config['BUGZSCOUT_URL']
         self.user = app.config['BUGZSCOUT_USER']
