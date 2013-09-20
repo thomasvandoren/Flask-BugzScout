@@ -52,7 +52,7 @@ class BugzScout(object):
         self.area = app.config['BUGZSCOUT_AREA']
 
         app.handle_exception = self._get_exception_handler(app)
-        app.handle_http_exception = self.get_http_exception_handler(app)
+        app.handle_http_exception = self._get_http_exception_handler(app)
 
         app.extensions['bugzscout'] = self
 
