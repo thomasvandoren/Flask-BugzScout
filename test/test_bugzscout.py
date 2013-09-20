@@ -5,6 +5,7 @@
 
 from __future__ import print_function, unicode_literals
 
+import flask
 import flask_bugzscout
 import mock
 import unittest
@@ -26,19 +27,51 @@ class BugzScoutTests(unittest.TestCase):
         self.app.handle_exception = noop
         self.app.handle_http_exception = noop
 
+    def make_bugzscout(self):
+        """Create and return an instance of BugzScout."""
+        return flask_bugzscout.BugzScout(self.app)
+
     def test_init(self):
         """Verify constructor calls through to init_app instance method."""
-        self.fail('no')
+        b = flask_bugzscout.BugzScout(self.app)
+        self.assertIsNotNone(b)
 
     def test_init_app__defaults(self):
         """Verify init_app sets defaults for app configuration and configures
         error handlers.
         """
-        self.fail('no')
+        b = self.make_bugzscout()
+
+        self.assertIsNone(self.app.config['BUGZSCOUT_URL'])
+        self.assertIsNone(self.app.config['BUGZSCOUT_USER'])
+        self.assertIsNone(self.app.config['BUGZSCOUT_PROJECT'])
+        self.assertIsNone(self.app.config['BUGZSCOUT_AREA'])
+        self.assertEqual(
+            {x for x in range(400, 418)},
+            self.app.config['BUGZSCOUT_HTTP_CODES'])
+
+        self.assertIsNone(b.url)
+        self.assertIsNone(b.user)
+        self.assertIsNone(b.project)
+        self.assertIsNone(b.area)
 
     def test_init_app(self):
         """Verify init_app uses app configuration."""
-        self.fail('no')
+        cfg = {
+            'BUGZSCOUT_URL': 'http://my.internal/',
+            'BUGZSCOUT_USER': 'my-user',
+            'BUGZSCOUT_PROJECT': 'my-project',
+            'BUGZSCOUT_AREA': 'my-area',
+            'BUGZSCOUT_HTTP_CODES': [404, 405],
+        }
+        self.app.config.update(cfg)
+        b = self.make_bugzscout()
+
+        self.assertEqual('http://my.internal/', b.url)
+        self.assertEqual('my-user', b.user)
+        self.assertEqual('my-project', b.project)
+        self.assertEqual('my-area', b.area)
+        self.assertEqual(self.app.config['BUGZSCOUT_HTTP_CODES'], [404, 405])
 
     def test_filter__noop(self):
         """Verify filter is a noop.
@@ -52,27 +85,69 @@ class BugzScoutTests(unittest.TestCase):
 
     def test_app_from_context(self):
         """Verify _app_from_context works when context is type flask.Flask."""
-        self.fail('no')
+        b = self.make_bugzscout()
+        ctx = flask.Flask('__main__')
+        actual_app = b._get_app_from_context(ctx)
+        self.assertIs(ctx, actual_app)
 
     def test_app_from_context__context(self):
         """Verify _app_from_context works when context is a context."""
-        self.fail('no')
+        b = self.make_bugzscout()
+        app = flask.Flask('__main__')
+        ctx = mock.Mock(name='context')
+        ctx.app = app
+
+        actual_app = b._get_app_from_context(ctx)
+        self.assertIs(app, actual_app)
 
     def test_app_from_context__none(self):
         """Verify _app_from_context returns top app from flask request context
         when context is None.
         """
-        self.fail('no')
+        b = self.make_bugzscout()
+        ctx = mock.Mock(name='context')
+        app = mock.Mock(name='app')
+        ctx.app = app
+        flask._request_ctx_stack.push(ctx)
+
+        actual_app = b._get_app_from_context(None)
+        self.assertIs(app, actual_app)
 
     def test_app_from_context__false(self):
         """Verify _app_from_context returns top app from flask request context
         when context is False.
         """
-        self.fail('no')
+        b = self.make_bugzscout()
+        ctx = mock.Mock(name='context')
+        app = mock.Mock(name='app')
+        ctx.app = app
+        flask._request_ctx_stack.push(ctx)
 
-    def test_report_error(self):
+        actual_app = b._get_app_from_context(False)
+        self.assertIs(app, actual_app)
+
+    @mock.patch('sys.exc_info')
+    @mock.patch('bugzscout.ext.celery_app.submit_error.delay')
+    def test_report_error(self, mock_submit, mock_exc_info):
         """Verify description and extra are setup and sent to celery."""
-        self.fail('no')
+        b = self.make_bugzscout()
+
+        # Setup context.
+        ctx = mock.Mock(name='context')
+        ctx.app = self.app
+
+        # Return a ValueError.
+        mock_exc_info.return_value = (
+            ValueError, ValueError('boom!'), None)
+
+        b._report_error(ctx)
+        mock_submit.assert_called_once_with(
+            b.url,
+            b.user,
+            b.project,
+            b.area,
+            mock.ANY,
+            extra=mock.ANY)
 
     def test_get_exception_data(self):
         """Verify summary and traceback are formatted correct for a given

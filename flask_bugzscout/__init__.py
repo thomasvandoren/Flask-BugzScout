@@ -132,9 +132,9 @@ class BugzScout(object):
         exception_data = self._get_exception_data(*sys.exc_info())
 
         description = '{method} {url} {summary}'.format(
-            request_data['method'],
-            request_data['url'],
-            exception_data['summary'])
+            method=request_data['method'],
+            url=request_data['url'],
+            summary=exception_data['summary'])
 
         # FogBugz appears to limit the length of the description (the case
         # title) to ~125 chars, but BugzScout will use the entire description
@@ -241,7 +241,7 @@ class BugzScout(object):
         # Gather mapping of module names to versions.
         modules = {}
         for module in pkg_resources.working_set:
-            modules[module.name] = module.version
+            modules[module.key] = module.version
 
         return {
             'env': self.filter(env, 'configuration'),
