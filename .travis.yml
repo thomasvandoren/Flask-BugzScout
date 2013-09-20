@@ -5,6 +5,6 @@ python:
   - "pypy"
 script:
   - "nosetests --verbose"
-  - "pep8 --show-source flask_bugzscout test"
+  - "flake8 --show-source flask_bugzscout test"
 notifications:
   email: thomas.vandoren@gmail.com
