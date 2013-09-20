@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-Flask-BugzScout
+"""Flask-BugzScout
 ===============
 
 `BugzScout <https://pypi.python.org/pypi/bugzscout>`_ extension for Flask.
