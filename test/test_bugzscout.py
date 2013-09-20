@@ -49,3 +49,47 @@ class BugzScoutTests(unittest.TestCase):
         self.assertEqual(
             123,
             flask_bugzscout.BugzScout(self.app).filter(123, None))
+
+    def test_app_from_context(self):
+        """Verify _app_from_context works when context is type flask.Flask."""
+        self.fail('no')
+
+    def test_app_from_context__context(self):
+        """Verify _app_from_context works when context is a context."""
+        self.fail('no')
+
+    def test_app_from_context__none(self):
+        """Verify _app_from_context returns top app from flask request context
+        when context is None.
+        """
+        self.fail('no')
+
+    def test_app_from_context__false(self):
+        """Verify _app_from_context returns top app from flask request context
+        when context is False.
+        """
+        self.fail('no')
+
+    def test_report_error(self):
+        """Verify description and extra are setup and sent to celery."""
+        self.fail('no')
+
+    def test_get_exception_data(self):
+        """Verify summary and traceback are formatted correct for a given
+        exception.
+        """
+        self.fail('no')
+
+    def test_get_request_data(self):
+        """Verify _get_request_data works with a non-Blueprinted url."""
+        self.fail('no')
+
+    def test_get_request_data__blueprint(self):
+        """Verify _get_request_data works with a Blueprint handler."""
+        self.fail('no')
+
+    def test_get_app_data(self):
+        """Verify _get_app_data returns dict with environment, app, and module
+        data.
+        """
+        self.fail('no')
