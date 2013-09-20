@@ -1,4 +1,5 @@
 bugzscout
+celery
 Flask
 
 # Test dependencies.

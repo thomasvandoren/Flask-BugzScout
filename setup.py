@@ -27,6 +27,7 @@ setup(
     platforms           ='any',
     install_requires    =[
         'bugzscout',
+        'celery',
         'Flask',
         ],
     classifiers         =[
