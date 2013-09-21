@@ -205,7 +205,7 @@ class BugzScout(object):
         :returns: dict of request data include verb, path, body, etc.
         """
         handler = None
-        if hasattr(request, 'blueprint'):
+        if request.blueprint is not None:
             handler = request.blueprint
         else:
             handler = request.module

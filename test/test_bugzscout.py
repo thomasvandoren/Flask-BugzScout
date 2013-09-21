@@ -8,6 +8,7 @@ from __future__ import print_function, unicode_literals
 import flask
 import flask_bugzscout
 import mock
+import sys
 import unittest
 
 
@@ -153,10 +154,30 @@ class BugzScoutTests(unittest.TestCase):
         """Verify summary and traceback are formatted correct for a given
         exception.
         """
-        self.fail('no')
+        b = self.make_bugzscout()
+
+        try:
+            raise ValueError('kaboom!')
+        except ValueError:
+            actual = b._get_exception_data(
+                *sys.exc_info())
+
+        self.assertEqual('ValueError: kaboom!', actual['summary'])
+
+        tb = actual['traceback']
+        self.assertTrue(isinstance(tb, list))
+        tb = ''.join(tb)
+
+        self.assertIn('Traceback', tb)
+        self.assertIn('kaboom!', tb)
 
     def test_get_request_data(self):
         """Verify _get_request_data works with a non-Blueprinted url."""
+        b = self.make_bugzscout()
+
+        request = mock.Mock(name='request')
+        session = mock.Mock(name='session')
+
         self.fail('no')
 
     def test_get_request_data__blueprint(self):
