@@ -8,3 +8,6 @@ script:
   - "flake8 --show-source flask_bugzscout test"
 notifications:
   email: thomas.vandoren@gmail.com
+matrix:
+  allow_failures:
+    - python: "3.3"
