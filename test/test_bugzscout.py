@@ -171,6 +171,7 @@ class BugzScoutTests(unittest.TestCase):
         self.assertIn('Traceback', tb)
         self.assertIn('kaboom!', tb)
 
+    @unittest.skip('not yet implemented')
     def test_get_request_data(self):
         """Verify _get_request_data works with a non-Blueprinted url."""
         b = self.make_bugzscout()
@@ -180,10 +181,12 @@ class BugzScoutTests(unittest.TestCase):
 
         self.fail('no')
 
+    @unittest.skip('not yet implemented')
     def test_get_request_data__blueprint(self):
         """Verify _get_request_data works with a Blueprint handler."""
         self.fail('no')
 
+    @unittest.skip('not yet implemented')
     def test_get_app_data(self):
         """Verify _get_app_data returns dict with environment, app, and module
         data.
